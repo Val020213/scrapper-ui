@@ -13,7 +13,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <Stack maxWidth={'md'} spacing={4} height={'100%'}>
-      <Typography variant="h2" className="animate-glitch">
+      <Typography variant="h3" className="animate-glitch">
         SISTEMA DE SCRAPPING V1.0
         <Typography
           component={'span'}

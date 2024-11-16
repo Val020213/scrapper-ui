@@ -5,7 +5,7 @@ export const clientRoutes = {
     configuration: 'service/configuration',
     support: 'service/support',
     dashboard: 'service/dashboard',
-    exit: 'services/exit',
+    exit: 'service/exit',
   },
 }
 

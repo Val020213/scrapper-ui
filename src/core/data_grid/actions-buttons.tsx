@@ -14,6 +14,8 @@ const ActionsButtons = ({ onDownload }: Props) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
+        height: '100%',
       }}
     >
       <Box
@@ -25,7 +27,14 @@ const ActionsButtons = ({ onDownload }: Props) => {
         }}
       >
         {onDownload && (
-          <HackerButton variant="Button">
+          <HackerButton
+            variant="Button"
+            sx={{
+              width: '40px !important',
+              height: '40px !important',
+              px: '1px !important',
+            }}
+          >
             <FileDown />
           </HackerButton>
         )}

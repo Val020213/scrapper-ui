@@ -3,31 +3,39 @@ import {
   DataGrid,
   DataGridProps,
   GridColDef,
+  gridPageCountSelector,
+  GridPagination,
   GridRowClassNameParams,
   GridValidRowModel,
+  useGridApiContext,
+  useGridSelector,
 } from '@mui/x-data-grid'
-import useCustomPagination from './usePagination'
-import { Pagination } from './pagination-type'
-import { Box, LinearProgress, Stack, styled } from '@mui/material'
+import {
+  Box,
+  InputBase,
+  LinearProgress,
+  Stack,
+  styled,
+  TablePaginationProps,
+  Typography,
+} from '@mui/material'
 import { GridOverlay } from '@mui/x-data-grid'
-import { useMemo } from 'react'
-import CustomPagination from './CustomPagination'
+import { useMemo, useState } from 'react'
+import HackerPagination from './CustomPagination'
+import { tailwindColors } from '@/theme/tailwindColors'
+import { SearchCodeIcon } from 'lucide-react'
 
 type Props = Omit<DataGridProps, 'pagination' | 'rows'> & {
+  title?: string
   data: GridValidRowModel[]
-  pagination: Pagination
   columns: GridColDef[]
-  hideFooter?: boolean
-  disableSelection?: boolean
-  rowHeight?: number
-  withoutSearch?: boolean
   size?: 'small' | 'medium' | 'large'
-  side?: 'left' | 'right'
 }
 
 export const dataGridSlots = {
   loadingOverlay: CustomLoadingOverlay,
   noRowsOverlay: CustomNoRowsOverlay,
+  pagination: CustomPagination,
 }
 
 export const MAX_PAGINATION_NUMBERS = 5
@@ -37,24 +45,50 @@ export const addOddOrEvenClassname = (params: GridRowClassNameParams) => {
 }
 
 export const StyledDataGrid = styled(DataGrid)(() => ({
-  '& .MuiDataGrid-columnHeader': {
-    '& svg': {
-      display: 'none',
-    },
+  border: 'none',
+  width: '100%',
+  borderRadius: '0px !important',
+  '& .header-class': {
+    fontWeight: 600,
+    backgroundColor: tailwindColors.green[900],
+    borderRadius: '0px !important',
+    color: tailwindColors.green[300],
+    borderTop: `2px solid ${tailwindColors.green[500]}`,
+    borderBottom: `2px solid ${tailwindColors.green[500]}`,
   },
-  '& .MuiDataGrid-columnHeader--sortable': {
-    '& svg': {
-      display: 'block !important',
-    },
+  '& .MuiSvgIcon-root': {
+    color: tailwindColors.green[500],
+  },
+  '& .MuiDataGrid-sortIcon': {
+    color: tailwindColors.green[500],
+  },
+  '& .even-row': {
+    backgroundColor: tailwindColors.gray[900],
+  },
+  '& .odd-row': {
+    backgroundColor: tailwindColors.gray[800],
+  },
+  '& .MuiDataGrid-cell': {
+    color: tailwindColors.green[400],
+    borderBottom: `1px solid ${tailwindColors.gray[900]}`,
+    borderTop: `1px solid ${tailwindColors.gray[900]}`,
+  },
+  '& .MuiDataGrid-filler': {
+    backgroundColor: tailwindColors.gray[900],
+  },
+  '& .MuiDataGrid-columnHeader:focus': {
+    outline: 'none',
+  },
+  '& .MuiTablePagination-displayedRows': {
+    color: tailwindColors.green[400],
   },
 }))
 
 const HackerDataGrid: React.FC<Props> = ({
+  title,
   data,
-  pagination,
   columns,
   size = 'small',
-  side = 'right',
   ...other
 }) => {
   const overlayHeight = {
@@ -63,90 +97,86 @@ const HackerDataGrid: React.FC<Props> = ({
     large: '600px',
   }
 
-  const paginatedDataGrid = useCustomPagination(data, pagination.perPage ?? 10)
+  const [search, setSearch] = useState<string>('')
 
-  const currentPageInterval = useMemo(() => {
-    const interval = Math.floor(
-      Math.max(paginatedDataGrid.currentPage - 1, 0) / MAX_PAGINATION_NUMBERS
-    )
-    return interval * MAX_PAGINATION_NUMBERS
-  }, [paginatedDataGrid.currentPage])
+  const dataContent = useMemo(() => {
+    if (search.length > 0) {
+      return data.filter((row) => {
+        return Object.values(row).some((value) =>
+          value.toString().toLowerCase().includes(search.toLowerCase())
+        )
+      })
+    }
+    return data
+  }, [data, search])
 
   return (
     <Stack
       position="relative"
+      width={'100%'}
       spacing={3}
       minHeight={overlayHeight[size]}
       justifyContent={'space-between'}
+      bgcolor={tailwindColors.black}
+      paddingTop={4}
+      sx={{
+        animation: 'glow 1.5s ease-in-out infinite alternate',
+      }}
     >
-      <Stack>
-        <StyledDataGrid
-          {...other}
-          rows={paginatedDataGrid.rowData}
-          columns={columns}
+      <Stack px={4} spacing={3}>
+        <Typography variant="h3" lineHeight="1.75rem">
+          {title?.toUpperCase() ?? 'SISTEMA DE DATOS'}
+        </Typography>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          borderColor={`${tailwindColors.green[500]}`}
+          border={1}
+          borderRadius={0.5}
+          paddingY={0.5}
+          paddingX={2}
           sx={{
-            width: '100%',
-            '--DataGrid-overlayHeight': overlayHeight[size],
-            '& .super-app-theme--header': {
-              fontWeight: 600,
-              fontSize: 16,
-              backgroundColor: '#F0F0F0',
+            bgcolor: tailwindColors.gray[900],
+            '&:hover': {
+              borderColor: `${tailwindColors.green[500]}`,
+              boxShadow: `0 0 0 2px ${tailwindColors.gray[600]}`,
             },
-            '& .MuiDataGrid-cellContent': {
-              fontSize: '16px',
-            },
-            '& .even-row': {
-              backgroundColor: '#F6F6F6',
-            },
-            '& .MuiDataGrid-columnHeaderTitleContainer': {
-              display: 'flex',
-              gap: 0.5,
-            },
-            '& .MuiDataGrid-columnHeaderTitleContainerContent': {
-              order: '2',
+            '&:focus-within': {
+              borderColor: `${tailwindColors.green[500]}`,
+              boxShadow: `0 0 0 2px ${tailwindColors.green[500]}`,
             },
           }}
-          slots={dataGridSlots}
-          getRowClassName={addOddOrEvenClassname}
-          autoHeight
-          rowHeight={size === 'small' ? 52 : 60}
-          hideFooter={true}
-          loading={other.loading}
-        />
+        >
+          <InputBase
+            value={search}
+            placeholder="Buscar url"
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{
+              color: `${tailwindColors.green[500]} !important`,
+              flex: 1,
+              fontSize: '0.875rem',
+            }}
+          />
+          <SearchCodeIcon size="20px" />
+        </Stack>
       </Stack>
-      <CustomPagination
-        currentPage={paginatedDataGrid.currentPage}
-        numbers={Array.from(
-          {
-            length: Math.min(
-              MAX_PAGINATION_NUMBERS,
-              Math.ceil(pagination.totalRecords ?? 0) /
-                (pagination.perPage ?? 10) +
-                1
-            ),
-          },
-          (_, i) => i + currentPageInterval + 1
-        )}
-        onChangeCurrentPage={paginatedDataGrid.changeCurrentPage}
-        onClickNext={() => {
-          const page = Math.min(
-            currentPageInterval + MAX_PAGINATION_NUMBERS,
-            Math.ceil(pagination.totalRecords ?? 0 / (pagination.perPage ?? 10))
-          )
-          paginatedDataGrid.changeCurrentPage(page + 1)
-        }}
-        onClickPrev={() => {
-          const page = Math.max(currentPageInterval - MAX_PAGINATION_NUMBERS, 0)
-          paginatedDataGrid.changeCurrentPage(page + 1)
-        }}
+
+      <StyledDataGrid
+        {...other}
+        rows={dataContent}
+        columns={columns}
+        slots={dataGridSlots}
         sx={{
-          justifyContent: side === 'right' ? 'flex-end' : 'flex-start',
+          '--DataGrid-overlayHeight': overlayHeight[size],
         }}
-        disabledNext={
-          currentPageInterval + MAX_PAGINATION_NUMBERS >=
-          Math.ceil((pagination.totalRecords ?? 0) / (pagination.perPage ?? 10))
-        }
-        disabledPrev={currentPageInterval === 0}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
+        pagination
+        columnHeaderHeight={40}
+        getRowClassName={addOddOrEvenClassname}
+        rowHeight={size === 'small' ? 52 : 60}
+        loading={other.loading}
       />
     </Stack>
   )
@@ -214,4 +244,51 @@ function CustomNoRowsOverlay() {
       <Box sx={{ mt: 2 }}>No hay datos</Box>
     </StyledGridOverlay>
   )
+}
+
+function Pagination({
+  page,
+  onPageChange,
+}: Pick<TablePaginationProps, 'page' | 'onPageChange' | 'className'>) {
+  const apiRef = useGridApiContext()
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector)
+
+  const pageInterval = useMemo(() => {
+    return Math.floor(page / MAX_PAGINATION_NUMBERS)
+  }, [page])
+
+  return (
+    <Stack p={4} pr={2}>
+      <HackerPagination
+        currentPage={page}
+        numbers={Array.from(
+          { length: MAX_PAGINATION_NUMBERS },
+          (_, i) => pageInterval * MAX_PAGINATION_NUMBERS + i + 1
+        )}
+        onChangeCurrentPage={onPageChange}
+        onClickNext={() =>
+          onPageChange(null, (pageInterval + 1) * MAX_PAGINATION_NUMBERS)
+        }
+        onClickPrev={() =>
+          onPageChange(
+            null,
+            Math.max(pageInterval * MAX_PAGINATION_NUMBERS - 1, 0)
+          )
+        }
+        disabledNext={(pageInterval + 1) * MAX_PAGINATION_NUMBERS >= pageCount}
+        disabledPrev={pageInterval === 0}
+        sx={{
+          display: 'flex',
+          gap: 1.3,
+          width: '100%',
+          justifyContent: 'center',
+        }}
+      />
+    </Stack>
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CustomPagination(props: any) {
+  return <GridPagination ActionsComponent={Pagination} {...props} />
 }

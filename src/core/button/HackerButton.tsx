@@ -26,7 +26,6 @@ export const HackerButton: React.FC<Props> = ({
       className="group"
       {...others}
       sx={{
-        ...(others.sx as SxProps<Theme>),
         height: variant === 'Card' ? '6rem' : '48px',
         color: `${tailwindColors[color][400]}`,
         borderColor: `${tailwindColors[color][400]}`,
@@ -50,6 +49,7 @@ export const HackerButton: React.FC<Props> = ({
           color: 'lightgray',
           borderColor: 'lightgray',
         },
+        ...(others.sx as SxProps<Theme>),
       }}
     >
       <Box

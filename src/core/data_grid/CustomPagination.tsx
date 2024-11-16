@@ -5,7 +5,10 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 interface Props {
   onClickPrev: () => void
   onClickNext: () => void
-  onChangeCurrentPage: (_: number) => void
+  onChangeCurrentPage: (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    page: number
+  ) => void
   numbers: number[]
   currentPage: number
   sx?: SxProps
@@ -56,9 +59,9 @@ export default function CustomPagination({
           <HackerButton
             size="small"
             variant={'Button'}
-            color={currentPage === number ? 'orange' : 'green'}
+            color={currentPage === number - 1 ? 'orange' : 'green'}
             key={number}
-            onClick={() => onChangeCurrentPage(number)}
+            onClick={(event) => onChangeCurrentPage(event, number - 1)}
             sx={{
               minWidth: 48,
               borderRadius: 1,
