@@ -34,6 +34,7 @@ const ActionsButtons = ({ onDownload }: Props) => {
               height: '40px !important',
               px: '1px !important',
             }}
+            onClick={onDownload}
           >
             <FileDown />
           </HackerButton>

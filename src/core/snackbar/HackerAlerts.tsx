@@ -4,6 +4,7 @@ import {
   HackerNotificationsTimeout,
   HackerNotificationsType,
 } from './HackerNotifications'
+import { tailwindColors } from '@/theme/tailwindColors'
 
 type Props = {
   message: string
@@ -15,15 +16,15 @@ type Props = {
 const getTypeColor = (type: HackerNotificationsType) => {
   switch (type) {
     case 'info':
-      return '#00ffff'
+      return 'blue'
     case 'warn':
-      return '#ffff00'
+      return 'yellow'
     case 'error':
-      return '#ff0000'
+      return 'red'
     case 'success':
-      return '00ff00'
+      return 'green'
     default:
-      return '#00ffff'
+      return 'green'
   }
 }
 
@@ -64,19 +65,20 @@ const HackerAlert = ({
           animation: `slideIn 0.3s ease-out`,
           fontFamily: '"Courier New", Courier, monospace',
           backgroundColor: '#000',
-          color: getTypeColor(type),
+          color: tailwindColors[getTypeColor(type)][500],
           padding: '16px',
           borderRadius: '4px',
-          maxWidth: '90%',
-          width: '400px',
-          fontSize: '0.875rem',
-          lineHeight: '1.5',
-          boxShadow: `0 0 10px ${getTypeColor(type)}`,
+          width: { xs: '100vw', sm: '80vw', md: '50vw', lg: '40vw' },
+          boxShadow: `0 0 10px ${tailwindColors[getTypeColor(type)][500]}`,
           display: 'flex',
           justifyContent: 'space-between',
         }}
       >
-        <Typography>
+        <Typography
+          whiteSpace={'break-spaces'}
+          width={'100%'}
+          fontSize={'0.825rem'}
+        >
           {type === 'success' && '> SUCCESS: '}
           {type === 'error' && '> ERROR: '}
           {type === 'warn' && '> WARNING: '}

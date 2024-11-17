@@ -84,13 +84,13 @@ export const typography = {
   h6: {
     fontWeight: 700,
     lineHeight: 28 / 16,
-    fontSize: pxToRem(17),
+    fontSize: pxToRem(16),
     ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
   },
   subtitle1: {
     fontWeight: 600,
     lineHeight: 24 / 16,
-    fontSize: pxToRem(16),
+    fontSize: pxToRem(14),
   },
   subtitle2: {
     fontWeight: 600,
@@ -99,11 +99,11 @@ export const typography = {
   },
   body1: {
     lineHeight: 24 / 16,
-    fontSize: pxToRem(16),
+    fontSize: pxToRem(14),
   },
   body2: {
     lineHeight: 24 / 16,
-    fontSize: pxToRem(14),
+    fontSize: pxToRem(12),
   },
   caption: {
     lineHeight: 24 / 16,
@@ -117,7 +117,7 @@ export const typography = {
   },
   p: {
     lineHeight: 24 / 16,
-    fontSize: pxToRem(16),
+    fontSize: pxToRem(14),
   },
   button: {
     fontWeight: 700,

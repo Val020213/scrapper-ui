@@ -1,5 +1,4 @@
-import { blue, green, orange, red, yellow } from '@mui/material/colors'
-import { black, white } from './tailwindColors'
+import { black, tailwindColors, white } from './tailwindColors'
 
 export const common = {
   black: black,
@@ -7,38 +6,38 @@ export const common = {
 }
 
 export const primary = {
-  main: green[500],
-  light: green[400],
+  main: tailwindColors.green[500],
+  light: tailwindColors.green[400],
   contrastText: common.black,
 }
 
 export const secondary = {
-  main: orange[500],
-  light: orange[400],
+  main: tailwindColors.orange[500],
+  light: tailwindColors.orange[400],
   contrastText: common.black,
 }
 
 export const error = {
-  main: red[500],
-  light: red[400],
+  main: tailwindColors.red[500],
+  light: tailwindColors.red[400],
   contrastText: common.black,
 }
 
 export const info = {
-  main: blue[500],
-  light: blue[400],
+  main: tailwindColors.blue[500],
+  light: tailwindColors.blue[400],
   contrastText: common.black,
 }
 
 export const success = {
-  main: green[500],
-  light: green[400],
+  main: tailwindColors.green[500],
+  light: tailwindColors.green[400],
   contrastText: common.black,
 }
 
 export const warning = {
-  main: yellow[500],
-  light: yellow[400],
+  main: tailwindColors.yellow[500],
+  light: tailwindColors.yellow[400],
   contrastText: common.black,
 }
 

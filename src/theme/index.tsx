@@ -59,7 +59,7 @@ export default function ThemeProvider({ children }: Readonly<Props>) {
         success: { main: success.main, contrastText: success.contrastText },
         error: { main: error.main, contrastText: error.contrastText },
         warning: { main: warning.main, contrastText: warning.contrastText },
-        text: { primary: '#3E3E3E', main: '#3E3E3E' },
+        text: { primary: green[500], main: green[400] },
         black: black,
         white: white,
         slate: slate,

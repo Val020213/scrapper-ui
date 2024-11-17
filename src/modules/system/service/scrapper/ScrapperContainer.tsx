@@ -51,7 +51,6 @@ export const ScrapperContainer = ({ data }: Props) => {
       headerName: 'Action',
       align: 'center',
       headerAlign: 'center',
-
       sortable: false,
       disableColumnMenu: true,
       disableExport: true,
@@ -69,37 +68,31 @@ export const ScrapperContainer = ({ data }: Props) => {
     },
   ]
   return (
-    <Stack sx={{ maxWidth: 'md', width: '100%' }}>
-      <Link href={'/'}>
-        <HackerButton
-          variant="Button"
-          color="green"
-          sx={{
-            position: 'fixed',
-            top: 48,
-            left: 48,
-            zIndex: 1,
-            width: '168px',
-          }}
-        >
-          &lt; Ir al Sistema
-        </HackerButton>
-      </Link>
-      <Link href={'?newUrl'}>
-        <HackerButton
-          variant="Button"
-          color="green"
-          sx={{
-            position: 'fixed',
-            top: 105,
-            left: 48,
-            zIndex: 1,
-            width: '168px',
-          }}
-        >
-          + Agregar URL
-        </HackerButton>
-      </Link>
+    <Stack spacing={4} sx={{ maxWidth: 'md', width: '100%' }}>
+      <Stack spacing={4} direction={'row'}>
+        <Link href={'/'}>
+          <HackerButton
+            variant="Button"
+            color="green"
+            sx={{
+              width: '168px',
+            }}
+          >
+            &lt; Ir al Sistema
+          </HackerButton>
+        </Link>
+        <Link href={'?newUrl'}>
+          <HackerButton
+            variant="Button"
+            color="green"
+            sx={{
+              width: '168px',
+            }}
+          >
+            + Agregar URL
+          </HackerButton>
+        </Link>
+      </Stack>
       <HackerDataGrid columns={columns} data={data} />
     </Stack>
   )

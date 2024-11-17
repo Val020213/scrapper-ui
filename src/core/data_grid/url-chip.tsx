@@ -17,6 +17,7 @@ const UrlStatusChip = ({ urlStatus }: { urlStatus: UrlStatus }) => {
         borderRadius: 0,
         width: '100px',
         height: '30px',
+        fontSize: '0.625rem',
       }}
       label={urlStatus.toUpperCase()}
     />
