@@ -8,12 +8,15 @@ import { Stack } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import { HackerButton } from '@/core/button/HackerButton'
 import Link from 'next/link'
+import AddUrl from './add-url/AddUrl'
+import { SearchParams } from 'next/dist/server/request/search-params'
 
 type Props = {
   data: UrlDataType[]
+  searchParams?: SearchParams
 }
 
-export const ScrapperContainer = ({ data }: Props) => {
+export const ScrapperContainer = ({ data, searchParams }: Props) => {
   const hackerMessages = useShowHackerMessage()
   const columns: GridColDef<UrlDataType>[] = [
     {
@@ -67,6 +70,7 @@ export const ScrapperContainer = ({ data }: Props) => {
       },
     },
   ]
+
   return (
     <Stack spacing={4} sx={{ maxWidth: 'md', width: '100%' }}>
       <Stack spacing={4} direction={'row'}>
@@ -81,7 +85,7 @@ export const ScrapperContainer = ({ data }: Props) => {
             &lt; Ir al Sistema
           </HackerButton>
         </Link>
-        <Link href={'?newUrl'}>
+        <Link href={'?currentModal=addUrl'}>
           <HackerButton
             variant="Button"
             color="green"
@@ -94,6 +98,7 @@ export const ScrapperContainer = ({ data }: Props) => {
         </Link>
       </Stack>
       <HackerDataGrid columns={columns} data={data} />
+      <AddUrl currentModal={searchParams?.currentModal as string} />
     </Stack>
   )
 }

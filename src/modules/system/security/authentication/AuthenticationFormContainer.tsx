@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import useShowHackerMessage from '@/hooks/useShowHackerMessage'
 import { useContext } from 'react'
 import { GlobalContext } from '@/core/global-context/GlobalContext'
+import { saveUserData } from '@/lib/cookies'
 
 const AuthenticationFormContainer = () => {
   const hackerMessage = useShowHackerMessage()
@@ -21,12 +22,16 @@ const AuthenticationFormContainer = () => {
     mode: 'onChange',
   })
 
-  function onSubmit(data: authenticationSchemaType) {
+  async function onSubmit(data: authenticationSchemaType) {
     hackerMessage(data.username + ' ' + data.password, 'info')
+    // get token
     globalContext.user[1]({
       name: data.username,
-      token: '41242wr&3438wey98103ruvrj13-vm8vj',
+      token: '132',
     })
+    // save token
+    await saveUserData('name', data.username)
+    await saveUserData('token', '132')
   }
 
   return (

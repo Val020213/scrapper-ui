@@ -9,9 +9,10 @@ export const GlobalContext = createContext<GlobalContextProps>(
 const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
   const user = useState<User | undefined>()
 
+  
+
   useEffect(() => {
-    // save user in cookies
-    // read user in cookies
+    
   })
 
   return (
